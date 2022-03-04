@@ -31,20 +31,21 @@ function game() {
 
         if(playerScore == 0 && computerScore == 0 && newGame) {
             container.textContent = "";
+            winner.textContent = "";
             newGame = false;
         }
         
         const round = `${playerSelection} vs ${computerSelection}`
-        const draw = `${round}, draw \n playerScore = ${playerScore} \n computerScore = ${computerScore}`
+        const draw = `${round}, draw!  playerScore = ${playerScore}  computerScore = ${computerScore}`
         
         let lose = () => {
             computerScore +=1;
-            return `${round}, you lose! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
+            return `${round}, you lose!  playerScore = ${playerScore}  computerScore = ${computerScore}`;
         }
 
         let win = () => {
             playerScore +=1;
-            return `${round}, you win! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
+            return `${round}, you win!  playerScore = ${playerScore}  computerScore = ${computerScore}`;
         }         
         
         switch(round) {
@@ -70,6 +71,7 @@ function game() {
     }
     
     const container = document.querySelector('#container');
+    const winner = document.querySelector('#winner')
 
     const content = document.createElement('p');
     content.textContent = playRound(playerSelection,computerSelection);
@@ -77,12 +79,16 @@ function game() {
     container.appendChild(content);
 
     if(playerScore == 5) {
-        container.textContent = "Player Win!";
+        container.textContent = "";
+        container.appendChild(content);
+        winner.textContent = "Player Win!"
         playerScore = 0;
         computerScore = 0;
         newGame = true;
     }   else if(computerScore == 5) {
-        container.textContent = "Computer Win!"
+        container.textContent = "";
+        container.appendChild(content);
+        winner.textContent = "Computer Win!"
         playerScore = 0;
         computerScore = 0;
         newGame = true;

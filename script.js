@@ -1,62 +1,101 @@
-//Initialze the scores
+//Initialize the scores
 let playerScore = 0;
 let computerScore = 0;
+let newGame = false;
 
-// repeat the game 5 times report winner at the end.
-for (let i=0; i<5; i++) {
-    game();    
+//the player chooses (Rock,Paper,Scissor) **input1
+let playerSelection = ""; 
+
+const buttons = document.querySelectorAll('button');
+
+function launchGame(e) {
+    playerSelection = this.textContent;
+    game();
+    e.stopPropagation();
 }
-(playerScore == computerScore) ? console.log("draw") : (playerScore > computerScore) ? console.log("You win!") : console.log("You lose");
 
-//rock paper and scissors game, keeps score.  
-function game() {
-    
-    //the player chooses (rock,paper,scissors) **input1
-    let playerSelection = prompt("Enter rock, paper or scissor");
-    playerSelection = playerSelection.toLowerCase();
+buttons.forEach(button => button.addEventListener('click', launchGame));
+  
 
-    // the pc chooses (rock,paper,scissors) **input 2
-    const options = ["rock", "paper", "scissor"];
+//Rock Paper and Scissor game, keeps score.  
+function game() {  
+
+    // the pc chooses (Rock,Paper,Scissor) **input 2
+    const options = ["Rock", "Paper", "Scissor"];
     random = Math.floor(Math.random()*3);
     let computerSelection = options[random];
 
     // the program compares the two inputs to determine a winner
     // show the the inputs and the winner **output
     function playRound(playerSelection,computerSelection) {
+
+        if(playerScore == 0 && computerScore == 0 && newGame) {
+            container.textContent = "";
+            newGame = false;
+        }
         
         const round = `${playerSelection} vs ${computerSelection}`
-        const draw = `${round} draw \n playerScore = ${playerScore} \n computerScore = ${computerScore}`
+        const draw = `${round}, draw \n playerScore = ${playerScore} \n computerScore = ${computerScore}`
         
         let lose = () => {
             computerScore +=1;
-            return `${round} you lose! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
+            return `${round}, you lose! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
         }
 
         let win = () => {
             playerScore +=1;
-            return `${round} you win! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
+            return `${round}, you win! \n playerScore = ${playerScore} \n computerScore = ${computerScore}`;
         }         
         
         switch(round) {
-            case "rock vs rock":
+            case "Rock vs Rock":
                 return draw;
-            case "paper vs paper":
+            case "Paper vs Paper":
                 return draw; 
-            case  "scissor vs scissor":
+            case  "Scissor vs Scissor":
                 return draw;
-            case "rock vs paper":
+            case "Rock vs Paper":
                 return lose();
-            case "rock vs scissor":
+            case "Rock vs Scissor":
                 return win();
-            case "paper vs scissor":
+            case "Paper vs Scissor":
                 return lose();
-            case "paper vs rock":
+            case "Paper vs Rock":
                 return win();
-            case "scissor vs rock":
+            case "Scissor vs Rock":
                 return lose();
-            case "scissor vs paper":
+            case "Scissor vs Paper":
                 return win();
         }
     }
-    console.log(playRound(playerSelection, computerSelection));    
+    
+    const container = document.querySelector('#container');
+
+    const content = document.createElement('p');
+    content.textContent = playRound(playerSelection,computerSelection);
+    
+    container.appendChild(content);
+
+    if(playerScore == 5) {
+        container.textContent = "Player Win!";
+        playerScore = 0;
+        computerScore = 0;
+        newGame = true;
+    }   else if(computerScore == 5) {
+        container.textContent = "Computer Win!"
+        playerScore = 0;
+        computerScore = 0;
+        newGame = true;
+    }
+
 }
+
+
+
+
+/* repeat the game 5 times report winner at the end.
+for (let i=0; i<5; i++) {
+    game();    
+}
+(playerScore == computerScore) ? console.log("draw") : (playerScore > computerScore) ? console.log("You win!") : console.log("You lose");
+*/
